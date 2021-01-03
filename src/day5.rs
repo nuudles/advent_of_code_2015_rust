@@ -27,14 +27,12 @@ fn is_nice_2(string: &str) -> bool {
         .windows(2)
         .map(|w| (w[0], w[1]))
         .enumerate()
-        .fold(&mut HashMap::new(), |m, (i, w)| {
+        .fold(HashMap::new(), |mut m, (i, w)| {
             let v = m.entry(w).or_insert(vec![]);
             v.push(i);
             m
         })
-        .iter()
-        .map(|(_, v)| v)
-        .filter(|v| v.len() > 1)
+        .values()
         .any(|v| v.windows(2).any(|w| w[1] - w[0] > 1));
     let has_sandwich = string
         .chars()
